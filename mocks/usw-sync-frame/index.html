@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>USW SYNC 화면 틀 시안 · 시안 기록실</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+.page{max-width:1040px;grid-template-columns:minmax(0,1fr)}
+body{padding-bottom:170px}
+.hintbox{border:1.5px dashed var(--ink);border-radius:12px;padding:10px 12px;font-size:13px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.tabs .chip{font-weight:700}
+.tabs .note{margin-left:auto}
+.screen[hidden]{display:none}
+.scap{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;font-size:13px;margin-bottom:8px}
+.scap b{font-size:15px}
+.toast{font:700 12px var(--font-num);border:1.5px solid var(--ink);border-radius:8px;padding:4px 10px;background:var(--warn);width:fit-content;min-height:28px}
+.toast:empty{display:none}
+
+/* ===== 공통 틀 ===== */
+.ph{border:1.5px dashed var(--ink);border-radius:8px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:12px;opacity:.75;padding:6px}
+.lines{display:grid;gap:9px;align-content:center}
+.lines i{display:block;height:7px;border-radius:4px;background:var(--ink);opacity:.22}
+.lines i:nth-child(2){width:85%}.lines i:nth-child(3){width:60%}
+.hbwrap{position:relative;display:inline-block}
+.hb{font:inherit;font-size:12px;font-weight:700;color:var(--ink);background:var(--paper);border:1.5px solid var(--ink);border-radius:7px;padding:3px 9px;min-height:30px;cursor:pointer;position:relative}
+.hb[aria-expanded="true"]{background:var(--ink);color:var(--paper)}
+.hb.pri{border-width:3px;padding:1px 7px}
+.menu{position:absolute;top:calc(100% + 6px);right:0;background:var(--paper);border:2px solid var(--ink);border-radius:10px;padding:5px;display:grid;gap:2px;min-width:150px;z-index:5;text-align:left;box-shadow:4px 4px 0 var(--ink)}
+.menu[hidden]{display:none}
+.menu button{font:inherit;font-size:12.5px;color:var(--ink);background:none;border:0;border-radius:6px;padding:5px 9px;text-align:left;cursor:pointer}
+.menu button:hover,.menu button:focus-visible{outline:none;box-shadow:inset 0 0 0 2px var(--ink)}
+.menu .sep{border-top:1px solid var(--ink);margin:3px 0}
+.menu small{display:block;padding:2px 9px 4px;font-size:11px;opacity:.7}
+
+/* ===== PC 틀 ===== */
+.pcwrap{overflow-x:auto;border:1.5px solid var(--ink);border-radius:14px;padding:10px;background:var(--paper)}
+.pc{min-width:880px;height:620px;border:2.5px solid var(--ink);border-radius:10px;display:grid;grid-template-rows:auto 1fr;background:var(--paper);overflow:hidden}
+.pchead{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 16px;border-bottom:2.5px solid var(--ink)}
+.brand{font-weight:900;font-size:18px;letter-spacing:-.02em;display:flex;align-items:baseline;gap:8px}
+.brand small{font:700 11px var(--font-num);border:1px solid var(--ink);border-radius:5px;padding:0 5px;opacity:.7}
+.hbtns{display:flex;gap:8px;align-items:center}
+.pcbody{display:grid;grid-template-columns:1fr 2fr 1fr;gap:16px;padding:16px 20px;min-height:0}
+.col{display:grid;grid-template-rows:1fr 1fr;gap:16px;min-height:0}
+.col.r{padding-top:0}
+.wcard{font:inherit;color:var(--ink);background:var(--paper);border:1.5px solid var(--ink);border-radius:12px;padding:10px 12px;display:grid;grid-template-rows:auto 1fr;gap:8px;text-align:left;cursor:pointer;min-height:0}
+.wcard:hover{border-width:3px;padding:8.5px 10.5px}
+.wcard.on{border-width:3px;padding:8.5px 10.5px;box-shadow:4px 4px 0 var(--ink)}
+.wcard b{font-size:13.5px;font-weight:900;display:flex;justify-content:space-between;align-items:center}
+.wcard b small{font:800 10px var(--font-num);opacity:.6}
+.main{border:2.5px solid var(--ink);border-radius:12px;display:grid;grid-template-rows:auto 1fr;min-height:0;overflow:hidden}
+.mainhead{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 14px;border-bottom:2px solid var(--ink);font-weight:900;font-size:15px}
+.mainhead small{font:700 11px var(--font-num);opacity:.7}
+.mainbody{padding:14px;display:grid;min-height:0}
+.mainbody .ph{height:100%;font-size:13px;flex-direction:column;gap:6px;line-height:1.5}
+.mainbody .ph>b{font-size:16px;opacity:1}
+.x{font:inherit;font-size:11px;font-weight:700;color:var(--ink);background:none;border:1px solid var(--ink);border-radius:6px;padding:1px 7px;cursor:pointer}
+
+/* ===== 비로그인 소개 ===== */
+.intro{min-width:880px;height:620px;border:2.5px solid var(--ink);border-radius:10px;display:grid;grid-template-rows:auto 1fr;overflow:hidden;background:var(--paper)}
+.introbody{overflow-y:auto;scrollbar-gutter:stable;padding:28px 60px 24px;display:grid;gap:34px;align-content:start}
+.introbody::-webkit-scrollbar{width:10px}.introbody::-webkit-scrollbar-thumb{background:var(--ink);border-radius:5px;border:2px solid var(--paper)}
+.zig{display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:center;min-height:170px}
+.zig .ph{height:170px;font-size:13px}
+.zig.rev .ph{order:2}
+.zig .lines{padding:0 10px}
+.zig .lines i:first-child{height:12px;width:55%;opacity:.5}
+.footbox{border:1.5px dashed var(--ink);border-radius:12px;min-height:120px;display:flex;align-items:center;justify-content:center;font-size:13px;opacity:.75;margin-top:6px}
+.scrollhint{text-align:center;font:700 11px var(--font-num);opacity:.6}
+
+/* ===== 휴대폰 전용 ===== */
+.phonewrap{display:flex;justify-content:center;border:1.5px solid var(--ink);border-radius:14px;padding:18px 10px;background:var(--paper)}
+.phone{width:390px;max-width:100%;height:780px;border:3px solid var(--ink);border-radius:34px;padding:10px;background:var(--paper);display:grid}
+.scr{border:1.5px solid var(--ink);border-radius:24px;overflow:hidden;display:grid;grid-template-rows:auto 1fr;min-height:0;background:var(--paper)}
+.mhead{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:12px 12px 10px;border-bottom:2.5px solid var(--ink)}
+.mhead .brand{font-size:16px}
+.mhead .hb{font-size:11px;padding:2px 7px;min-height:28px}
+.mhead .menu{min-width:140px}
+.mbody{display:grid;grid-template-rows:auto 1fr;gap:14px;padding:14px 12px 12px;min-height:0}
+.notice{border:1.5px solid var(--ink);border-radius:12px;padding:10px 12px;display:grid;gap:6px;cursor:pointer;text-align:left;font:inherit;color:var(--ink);background:var(--paper)}
+.notice b{font-size:13px;font-weight:900;display:flex;justify-content:space-between}
+.notice b small{font:800 10px var(--font-num);opacity:.6}
+.notice .lines{gap:7px}
+.notice .lines i{height:6px}
+.notice .more{font-size:12px;border-top:1px dashed var(--ink);padding-top:6px}
+.listbox{border:2px solid var(--ink);border-radius:12px;display:grid;grid-template-rows:auto 1fr;min-height:0;overflow:hidden;position:relative}
+.lhead{padding:9px 12px 7px;border-bottom:2px solid var(--ink);font-size:12px;display:flex;justify-content:space-between;align-items:baseline}
+.lhead b{font-size:13.5px;font-weight:900}
+.lhead small{font:800 10px var(--font-num);opacity:.6}
+.list{overflow-y:auto;scrollbar-gutter:stable;min-height:0;display:grid;align-content:start}
+.list::-webkit-scrollbar{width:9px}.list::-webkit-scrollbar-thumb{background:var(--ink);border-radius:5px;border:2px solid var(--paper)}
+.row{font:inherit;color:var(--ink);background:var(--paper);border:0;border-bottom:1px solid var(--ink);padding:13px 12px;display:grid;grid-template-columns:1fr auto;gap:3px 10px;text-align:left;cursor:pointer;min-height:74px;align-content:center}
+.row:last-child{border-bottom:0}
+.row:hover,.row:focus-visible{outline:none;box-shadow:inset 4px 0 0 var(--ink)}
+.row>b{font-size:14.5px;font-weight:900;grid-column:1;grid-row:1}
+.row .arr{grid-column:2;grid-row:1/3;align-self:center;font-weight:900;font-size:16px}
+.row .st{grid-column:1;grid-row:2;font-size:12px;opacity:.7;display:flex;gap:6px;align-items:center}
+.row .st i{display:inline-block;height:6px;border-radius:3px;background:var(--ink);opacity:.25;width:90px}
+.fade{position:absolute;left:0;right:9px;bottom:0;height:34px;background:linear-gradient(transparent,var(--paper));pointer-events:none}
+.detail{display:grid;grid-template-rows:auto 1fr;min-height:0;padding:0 12px 12px}
+.detail .dh{display:flex;align-items:center;gap:8px;padding:10px 0;font-weight:900;font-size:15px}
+.detail .dh small{font:700 11px var(--font-num);opacity:.6;margin-left:auto}
+.detail .ph{flex-direction:column;gap:6px;font-size:13px;line-height:1.5}
+.detail .ph>b{font-size:16px}
+.back2{font:inherit;font-size:12px;font-weight:700;color:var(--ink);background:var(--paper);border:1.5px solid var(--ink);border-radius:8px;padding:3px 9px;cursor:pointer}
+
+/* ===== 선택/메모 ===== */
+.qhead{display:grid;gap:4px;margin-top:10px}
+.qhead p{margin:0;font-size:14px}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.opt{border:1.5px solid var(--ink);border-radius:14px;padding:10px 12px;display:grid;gap:6px;align-content:start}
+.opt.on{border-width:4px;padding:7.5px 9.5px}
+.opt h3{margin:0;font-size:15px;font-weight:900}
+.opt p{margin:0;font-size:12.5px}
+.pick{font:inherit;font-weight:700;color:var(--ink);background:var(--paper);border:1.5px solid var(--ink);border-radius:12px;min-height:40px;cursor:pointer}
+.pick[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.pick:focus-visible,.ans:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.ans{width:100%;min-height:76px;font:inherit;font-size:15px;color:var(--ink);background:var(--paper);border:1.5px solid var(--ink);border-radius:12px;padding:10px 12px;resize:vertical}
+.ans::placeholder{color:var(--ink);opacity:.5}
+.lbl{font-size:12px;font-weight:700;margin:6px 0 4px}
+.pickbar{position:fixed;left:0;right:0;bottom:0;background:var(--paper);border-top:3px solid var(--ink);padding:8px max(16px,env(safe-area-inset-left,0px)) max(8px,env(safe-area-inset-bottom,0px));display:grid;gap:6px;z-index:10}
+.pickline{font:700 12px var(--font-num);word-break:break-word}
+@media (max-width:640px){.zig{gap:20px}.introbody{padding:20px 20px}}
+</style>
+</head>
+<body>
+<div class="page">
+  <a class="back" href="../../">← 시안 목록</a>
+  <header>
+    <h1>USW SYNC 화면 틀 시안</h1>
+    <p style="margin:6px 0 0">손그림 3장을 <b>흑백 틀</b>로 옮긴 시안이에요. 내용은 비워 두고 <b>자리와 흐름</b>만 잡았어요. 버튼과 카드는 눌러 볼 수 있어요. 아래에서 화면마다 <b>이대로 진행 / 고칠 것 있음</b>을 고르고, 고칠 점은 글로 적은 뒤 <b>선택 결과 복사</b>로 대화에 붙여 넣어 주세요.</p>
+  </header>
+  <div class="hintbox">이름은 아직 임시라 <b>USW SYNC</b>로 적어 두었어요. 흐름: <b>비로그인 소개</b>에서 로그인 → <b>PC 틀</b>(계정 › 로그아웃 → 다시 소개). <b>휴대폰</b>은 별도 화면으로, 주요 기능을 목록에서 골라 들어가요.</div>
+
+  <div class="tabs" id="tabs">
+    <button class="chip" data-s="pc" aria-pressed="true">PC 기준 틀</button>
+    <button class="chip" data-s="intro" aria-pressed="false">② 비로그인 소개</button>
+    <button class="chip" data-s="phone" aria-pressed="false">① 휴대폰 전용</button>
+    <span class="toast" id="toast"></span>
+  </div>
+
+  <!-- ===== PC 기준 틀 ===== -->
+  <section class="screen" id="s-pc">
+    <div class="scap"><b>PC 기준 사이트 틀</b><span>왼쪽·오른쪽 카드 4개 + 가운데 세부 작업 공간. 카드나 세부기능을 누르면 가운데에 열려요. 좁은 화면에서는 옆으로 밀어 보세요.</span></div>
+    <div class="pcwrap"><div class="pc">
+      <div class="pchead">
+        <div class="brand">USW SYNC <small>임시 명칭</small></div>
+        <div class="hbtns">
+          <span class="hbwrap"><button class="hb" data-menu="feat" aria-expanded="false">세부기능</button><div class="menu" hidden id="m-feat"><small>전체 기능</small></div></span>
+          <span class="hbwrap"><button class="hb" data-menu="set" aria-expanded="false">설정</button><div class="menu" hidden><button data-open="설정 · 알림">알림</button><button data-open="설정 · 시간표 연동">시간표 연동</button><button data-open="설정 · 화면">화면</button></div></span>
+          <span class="hbwrap"><button class="hb pri" data-menu="acct" aria-expanded="false">계정</button><div class="menu" hidden><small>(이름) · (학번)</small><button data-open="내 계정">내 계정</button><button data-open="내 팀 목록">내 팀</button><div class="sep"></div><button data-logout>로그아웃</button></div></span>
+        </div>
+      </div>
+      <div class="pcbody">
+        <div class="col">
+          <button class="wcard" data-f="공통 공강"><b>공통 공강 <small>CARD 1</small></b><div class="ph">카드 내용 자리</div></button>
+          <button class="wcard" data-f="회의 일정"><b>회의 일정 <small>CARD 2</small></b><div class="ph">카드 내용 자리</div></button>
+        </div>
+        <div class="main">
+          <div class="mainhead"><span id="mainTitle">세부 작업 공간</span><span style="display:flex;gap:6px;align-items:center"><small id="mainSub">비어 있음</small><button class="x" id="mainClose" hidden>닫기</button></span></div>
+          <div class="mainbody"><div class="ph" id="mainPh"><b>세부 작업 공간</b><span>양쪽 카드나 위의 <b>세부기능</b>을 누르면<br>여기에 그 기능의 세부 화면이 열려요.</span></div></div>
+        </div>
+        <div class="col r">
+          <button class="wcard" data-f="할 일"><b>할 일 <small>CARD 3</small></b><div class="ph">카드 내용 자리</div></button>
+          <button class="wcard" data-f="마감 현황"><b>마감 현황 <small>CARD 4</small></b><div class="ph">카드 내용 자리</div></button>
+        </div>
+      </div>
+    </div></div>
+  </section>
+
+  <!-- ===== ② 비로그인 소개 ===== -->
+  <section class="screen" id="s-intro" hidden>
+    <div class="scap"><b>② 비로그인 소개 화면</b><span>로그인 전에 보이는 결과물 소개 페이지. 그림·글 자리만 지그재그로 잡아 두었고, 아래로 스크롤돼요.</span></div>
+    <div class="pcwrap"><div class="intro">
+      <div class="pchead">
+        <div class="brand">USW SYNC <small>임시 명칭</small></div>
+        <div class="hbtns"><button class="hb pri" id="loginBtn">로그인</button></div>
+      </div>
+      <div class="introbody">
+        <div class="zig"><div class="ph">그림 1 자리</div><div class="lines"><i></i><i></i><i></i><i></i></div></div>
+        <div class="zig rev"><div class="ph">그림 2 자리</div><div class="lines"><i></i><i></i><i></i><i></i></div></div>
+        <div class="zig"><div class="ph">그림 3 자리</div><div class="lines"><i></i><i></i><i></i><i></i></div></div>
+        <div class="footbox">하단 넓은 영역 자리 (시작하기 / 안내 / 바닥글)</div>
+        <div class="scrollhint">— 끝 —</div>
+      </div>
+    </div></div>
+  </section>
+
+  <!-- ===== ① 휴대폰 전용 ===== -->
+  <section class="screen" id="s-phone" hidden>
+    <div class="scap"><b>① 휴대폰 전용</b><span>위 공지 한 칸 + 주요 기능 목록. 줄마다 <b>(기능 이름) — (현재 주요 상황)</b>이고, 누르면 그 기능으로 들어가요. 목록은 스크롤돼요.</span></div>
+    <div class="phonewrap"><div class="phone"><div class="scr">
+      <div class="mhead">
+        <div class="brand">USW SYNC</div>
+        <div class="hbtns">
+          <span class="hbwrap"><button class="hb" data-menu="mfeat" aria-expanded="false">세부기능</button><div class="menu" hidden id="m-mfeat"><small>전체 기능</small></div></span>
+          <span class="hbwrap"><button class="hb" data-menu="mset" aria-expanded="false">설정</button><div class="menu" hidden><button data-mopen="설정 · 알림">알림</button><button data-mopen="설정 · 시간표 연동">시간표 연동</button></div></span>
+          <span class="hbwrap"><button class="hb pri" data-menu="macct" aria-expanded="false">계정</button><div class="menu" hidden><small>(이름) · (학번)</small><button data-mopen="내 계정">내 계정</button><div class="sep"></div><button data-logout>로그아웃</button></div></span>
+        </div>
+      </div>
+      <div class="mbody" id="mHome">
+        <button class="notice" id="notice" aria-expanded="false"><b>공지 <small>NOTICE</small></b><div class="lines"><i></i><i></i></div><div class="more" hidden>공지 전체 글 자리. 누르면 접혀요.</div></button>
+        <div class="listbox">
+          <div class="lhead"><b>주요 기능</b><small>(기능 이름) — (현재 주요 상황)</small></div>
+          <div class="list" id="mList"></div>
+          <div class="fade"></div>
+        </div>
+      </div>
+      <div class="detail" id="mDetail" hidden>
+        <div class="dh"><button class="back2" id="mBack">← 목록</button><span id="mTitle">기능</span><small>MOBILE</small></div>
+        <div class="ph"><b id="mPhTitle">기능 이름</b><span>휴대폰 전용 세부 화면 자리.<br>여기에 이 기능의 화면이 들어가요.</span></div>
+      </div>
+    </div></div></div>
+  </section>
+
+  <!-- ===== 선택과 메모 ===== -->
+  <div class="qhead"><div class="sec"><span>화면마다 판단해 주세요</span><small>3 + 메모</small></div><p>틀이 손그림과 맞는지만 봐 주세요. 글자·색·실제 내용은 다음 단계에서 넣어요.</p></div>
+
+  <div class="qhead"><div class="sec"><span data-qtitle="pc">1. PC 기준 틀</span><small>Q1</small></div></div>
+  <div class="opts">
+    <section class="opt" data-q="pc" data-o="ok"><h3>이대로 진행</h3><p>카드 2+2, 가운데 작업 공간, 위 버튼 3개 그대로.</p><button class="pick">이걸로 선택</button></section>
+    <section class="opt" data-q="pc" data-o="fix"><h3>고칠 것 있음</h3><p>아래 칸에 무엇을 고칠지 적어 주세요.</p><button class="pick">이걸로 선택</button></section>
+  </div>
+  <div><div class="lbl">글로 적기 (선택)</div><textarea class="ans" data-q="pc" placeholder="예: 카드 이름을 바꾸고 싶어요 / 오른쪽 카드는 하나만 / 가운데를 더 넓게"></textarea></div>
+
+  <div class="qhead"><div class="sec"><span data-qtitle="intro">2. ② 비로그인 소개</span><small>Q2</small></div></div>
+  <div class="opts">
+    <section class="opt" data-q="intro" data-o="ok"><h3>이대로 진행</h3><p>그림·글 지그재그 3단 + 하단 넓은 칸.</p><button class="pick">이걸로 선택</button></section>
+    <section class="opt" data-q="intro" data-o="fix"><h3>고칠 것 있음</h3><p>아래 칸에 무엇을 고칠지 적어 주세요.</p><button class="pick">이걸로 선택</button></section>
+  </div>
+  <div><div class="lbl">글로 적기 (선택)</div><textarea class="ans" data-q="intro" placeholder="예: 맨 위에 큰 제목 한 줄 / 단을 2개로 / 로그인 말고 시작하기 버튼도"></textarea></div>
+
+  <div class="qhead"><div class="sec"><span data-qtitle="phone">3. ① 휴대폰 전용</span><small>Q3</small></div></div>
+  <div class="opts">
+    <section class="opt" data-q="phone" data-o="ok"><h3>이대로 진행</h3><p>공지 1칸 + 기능 목록(이름 — 상황), 누르면 진입.</p><button class="pick">이걸로 선택</button></section>
+    <section class="opt" data-q="phone" data-o="fix"><h3>고칠 것 있음</h3><p>아래 칸에 무엇을 고칠지 적어 주세요.</p><button class="pick">이걸로 선택</button></section>
+  </div>
+  <div><div class="lbl">글로 적기 (선택)</div><textarea class="ans" data-q="phone" placeholder="예: 목록에 들어갈 기능 순서 / 공지는 접혀 있게 / 아래 탭바가 필요"></textarea></div>
+
+  <div class="qhead"><div class="sec"><span data-qtitle="etc">4. 그 밖에</span><small>메모</small></div></div>
+  <div><textarea class="ans" data-q="etc" placeholder="예: 서비스 이름 후보 / PC에서도 휴대폰 목록 화면이 필요한지 / 세부기능 버튼에 들어갈 항목"></textarea></div>
+</div>
+
+<script>window.MOCK_ID = 'usw-sync-frame';</script>
+<script src="../../assets/choose.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const FEATS = ['팀 만들기 · 초대', '시간표 · 가능 시간 등록', '공통 공강 찾기', '회의 시간 추천 · 투표', '회의 일정 확정', '역할 · 할 일', '마감 · 진행 상황'];
+let toastT;
+function toast(t){ $('toast').textContent = t; clearTimeout(toastT); toastT = setTimeout(() => { $('toast').textContent = ''; }, 2600); }
+
+/* 탭 */
+function show(s){
+  document.querySelectorAll('#tabs .chip').forEach(b => b.setAttribute('aria-pressed', b.dataset.s === s));
+  ['pc','intro','phone'].forEach(k => { $('s-' + k).hidden = k !== s; });
+  closeMenus();
+}
+document.querySelectorAll('#tabs .chip').forEach(b => b.onclick = () => show(b.dataset.s));
+
+/* 위 버튼 메뉴 (PC·휴대폰 공통) */
+function closeMenus(){ document.querySelectorAll('.hb[data-menu]').forEach(b => { b.setAttribute('aria-expanded', 'false'); b.nextElementSibling.hidden = true; }); }
+document.addEventListener('click', e => {
+  const inMenu = e.target.closest('.menu');
+  const hb = e.target.closest('.hb[data-menu]');
+  if (hb && !inMenu) {
+    const open = hb.getAttribute('aria-expanded') === 'true';
+    closeMenus();
+    if (!open) { hb.setAttribute('aria-expanded', 'true'); hb.nextElementSibling.hidden = false; }
+    e.stopPropagation(); return;
+  }
+  if (!inMenu) closeMenus();
+});
+
+/* 세부기능 메뉴 채우기 */
+FEATS.forEach(f => {
+  const a = document.createElement('button'); a.textContent = f; a.dataset.open = f; $('m-feat').append(a);
+  const b = document.createElement('button'); b.textContent = f; b.dataset.mopen = f; $('m-mfeat').append(b);
+});
+
+/* PC: 가운데 작업 공간 */
+function openMain(name, from){
+  $('mainTitle').textContent = name; $('mainSub').textContent = from || '열림'; $('mainClose').hidden = false;
+  $('mainPh').innerHTML = '<b>' + name + '</b><span>세부 화면 자리.<br>여기에 ' + name + ' 기능의 내용이 들어가요.</span>';
+  document.querySelectorAll('.wcard').forEach(c => c.classList.toggle('on', c.dataset.f === name));
+}
+function closeMain(){
+  $('mainTitle').textContent = '세부 작업 공간'; $('mainSub').textContent = '비어 있음'; $('mainClose').hidden = true;
+  $('mainPh').innerHTML = '<b>세부 작업 공간</b><span>양쪽 카드나 위의 <b>세부기능</b>을 누르면<br>여기에 그 기능의 세부 화면이 열려요.</span>';
+  document.querySelectorAll('.wcard').forEach(c => c.classList.remove('on'));
+}
+document.querySelectorAll('.wcard').forEach(c => c.onclick = () => openMain(c.dataset.f, '카드에서'));
+$('mainClose').onclick = closeMain;
+document.addEventListener('click', e => {
+  const o = e.target.closest('[data-open]'); if (o) { openMain(o.dataset.open, '위 버튼에서'); closeMenus(); return; }
+  const m = e.target.closest('[data-mopen]'); if (m) { openDetail(m.dataset.mopen); closeMenus(); return; }
+  if (e.target.closest('[data-logout]')) { closeMenus(); closeMain(); show('intro'); toast('로그아웃 → 비로그인 소개 화면'); }
+});
+
+/* 소개: 로그인 → PC 틀 */
+$('loginBtn').onclick = () => { show('pc'); toast('로그인했다고 보고 PC 틀로 이동'); };
+
+/* 휴대폰 */
+FEATS.forEach(f => {
+  const r = document.createElement('button'); r.className = 'row';
+  r.innerHTML = '<b></b><span class="arr">›</span><span class="st">현재 주요 상황 <i></i></span>';
+  r.querySelector('b').textContent = f; r.onclick = () => openDetail(f); $('mList').append(r);
+});
+function openDetail(name){ $('mTitle').textContent = name; $('mPhTitle').textContent = name; $('mHome').hidden = true; $('mDetail').hidden = false; }
+$('mBack').onclick = () => { $('mDetail').hidden = true; $('mHome').hidden = false; };
+$('notice').onclick = () => { const b = $('notice'), m = b.querySelector('.more'); m.hidden = !m.hidden; b.setAttribute('aria-expanded', !m.hidden); };
+</script>
+</body>
+</html>

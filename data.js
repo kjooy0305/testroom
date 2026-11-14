@@ -3,6 +3,21 @@
 // questions: 시안 페이지의 질문 id 목록과 질문 글 (목록에서 선택 진행도를 보여 준다)
 window.MOCKS = [
   {
+    id: 'usw-sync-frame',
+    title: 'USW SYNC 화면 틀: PC · 비로그인 소개 · 휴대폰',
+    project: 'USW SYNC (수원대 팀플 조율)',
+    date: '2026-11-14',
+    status: 'open',
+    summary: '손그림 3장을 흑백 틀로 옮긴 시안. PC 기준 틀(카드 2+2 + 세부 작업 공간), 비로그인 소개 화면(빈 지그재그 틀), 휴대폰 전용(공지 + 주요 기능 목록에서 선택) — 버튼·카드 눌러 보기 가능',
+    tags: ['시안', '화면 틀', 'PC', '휴대폰', '흑백', '해커톤'],
+    questions: [
+      { id: 'pc', text: 'PC 기준 틀' },
+      { id: 'intro', text: '② 비로그인 소개' },
+      { id: 'phone', text: '① 휴대폰 전용' },
+      { id: 'etc', text: '그 밖에' }
+    ]
+  },
+  {
     id: 'dungeon-minigames',
     title: '던전 미니게임: 어떤 게임을 할지',
     project: '끝에 도달하는 이야기',
