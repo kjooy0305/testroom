@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>레이어 구조 시안 · 시안 기록실</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+.page{max-width:980px}
+.qhead{display:grid;gap:4px;margin-top:10px}
+.qhead p{margin:0;font-size:14px}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:12px}
+.opt{border:1.5px solid var(--ink);border-radius:14px;padding:12px;display:grid;gap:10px;align-content:start}
+.opt.on{border-width:4px;padding:9.5px}
+.opt h3{margin:0;font-size:16px;font-weight:900;display:flex;gap:8px;align-items:center}
+.opt .ltr{font:800 14px var(--font-num);border:2px solid var(--ink);border-radius:50%;width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;flex:none}
+.opt p{margin:0;font-size:13px}
+.pro{font-size:12px;margin:0;padding-left:16px}
+.pro li{margin:1px 0}
+.pick{font:inherit;font-weight:700;color:var(--ink);background:var(--paper);border:1.5px solid var(--ink);border-radius:12px;min-height:44px;cursor:pointer}
+.pick[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.pick:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+/* 미니 화면 */
+.mini{border:2px solid var(--ink);border-radius:12px;padding:8px;background:var(--paper);font-size:12px;display:grid;gap:6px;min-height:170px;align-content:start}
+.mini .row{display:flex;gap:4px;flex-wrap:wrap;align-items:center}
+.mc{border:1px solid var(--ink);border-radius:999px;padding:1px 8px;font-size:11px;background:var(--paper);color:var(--ink);font-family:inherit}
+.mc.on{border-width:3px;padding:0 6px;font-weight:700}
+.crumb{display:flex;gap:4px;align-items:center;flex-wrap:wrap;font-weight:700}
+.crumb i{font-style:normal;opacity:.6}
+.crumb button{font:inherit;color:var(--ink);background:none;border:0;border-bottom:2px solid var(--ink);padding:0 2px;cursor:pointer}
+.drop{border:2px solid var(--ink);border-radius:8px;padding:4px;display:grid;gap:2px;background:var(--paper);width:fit-content;min-width:130px}
+.drop div{padding:2px 8px;border-radius:5px}
+.drop .on{box-shadow:inset 0 0 0 2px var(--ink);font-weight:700}
+.body1{border:2px dashed var(--ink);border-radius:8px;padding:8px;min-height:48px;display:flex;align-items:center;justify-content:center;font-weight:700}
+.side{display:grid;grid-template-columns:96px 1fr;gap:6px}
+.tree{border-right:2px solid var(--ink);padding-right:6px;display:grid;gap:1px;font-size:11px;align-content:start}
+.tree .l1{padding-left:0;font-weight:700}.tree .l2{padding-left:8px}.tree .l3{padding-left:16px}
+.tree .on{background:var(--ink);color:var(--paper);border-radius:3px;padding:0 3px}
+.cols{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+.cols div{border:1.5px solid var(--ink);border-radius:6px;padding:12px 2px;text-align:center;font-size:11px;font-weight:700}
+.cols div.on{border-width:3px}
+.noteitem{border-bottom:1px solid var(--ink);padding:4px 0;display:flex;gap:6px;align-items:center;justify-content:space-between}
+.noteitem small{font-size:10px}
+.noteitem .tg{border:1px solid var(--ink);border-radius:5px;padding:0 5px;font-size:10px;font-weight:700}
+.sum{opacity:.75;font-size:11px;margin:2px 0 0}
+.pagebig{border:2px solid var(--ink);border-radius:8px;padding:6px;display:grid;gap:3px}
+.pagebig .ln{height:6px;background:var(--ink);border-radius:3px;opacity:.85}
+.pickbar{position:fixed;left:0;right:0;bottom:0;background:var(--paper);border-top:3px solid var(--ink);padding:8px max(16px,env(safe-area-inset-left,0px)) max(8px,env(safe-area-inset-bottom,0px));display:grid;gap:6px;z-index:10}
+.pickline{font:700 12px var(--font-num);word-break:break-word}
+.hintbox{border:1.5px dashed var(--ink);border-radius:12px;padding:10px 12px;font-size:13px}
+</style>
+</head>
+<body>
+<div class="page">
+  <a class="back" href="../../">← 시안 목록</a>
+  <header>
+    <h1>레이어 구조 시안</h1>
+    <p style="margin:6px 0 0">끝에 도달하는 이야기의 <b>화면 시안</b>과 <b>세계관 노트</b>를 나무위키처럼 층으로 나눠 보는 방법을 고르는 시안이에요. 각 질문마다 카드 하나를 골라 <b>이걸로 선택</b>을 누르세요. 아래 줄에 선택 결과가 쌓이고, 다 고르면 <b>선택 결과 복사</b>를 눌러 대화에 붙여 넣어 주세요.</p>
+  </header>
+  <div class="hintbox">예시 층: <b>홈 › 사전 › 몬스터 › 상세</b> (4층). 시안은 화면이 20개가 넘고, 세계관 노트는 줄이 40개가 넘어서 층이 깊어져도 화면이 복잡해지지 않아야 해요.</div>
+
+  <!-- ===== 질문 1 ===== -->
+  <div class="qhead"><div class="sec"><span data-qtitle="nav">1. 위쪽 바로가기 모양</span><small>Q1</small></div><p>맨 위에서 화면을 옮겨 다니는 길잡이의 모양이에요. 카드 안 항목은 눌러 볼 수 있어요.</p></div>
+  <div class="opts">
+    <section class="opt" data-q="nav" data-o="a">
+      <h3><span class="ltr">A</span>경로 + 펼침 목차</h3>
+      <div class="mini" id="demoA">
+        <div class="crumb"><button data-d="홈">홈</button><i>›</i><button data-d="사전">사전</button><i>›</i><button data-d="몬스터">몬스터</button><i>›</i><b>상세</b></div>
+        <div class="drop" id="dropA"><div>목록</div><div class="on">상세</div></div>
+        <div class="body1" id="bodyA">몬스터 · 상세 화면</div>
+      </div>
+      <ul class="pro"><li>한 줄이라 층이 깊어도 안 늘어나요</li><li>경로 이름을 누르면 그 층의 형제 화면이 목록으로 펼쳐져요</li><li>나무위키의 "문서 경로"와 가장 비슷해요</li></ul>
+      <button class="pick">이걸로 선택</button>
+    </section>
+    <section class="opt" data-q="nav" data-o="b">
+      <h3><span class="ltr">B</span>칩 줄을 층마다 한 줄씩</h3>
+      <div class="mini">
+        <div class="row"><span class="mc">홈</span><span class="mc on">사전</span><span class="mc">업적</span><span class="mc">설정</span><span class="mc">플레이</span></div>
+        <div class="row">ㄴ<span class="mc on">몬스터</span><span class="mc">장비</span><span class="mc">변이</span><span class="mc">지역</span><span class="mc">특성</span></div>
+        <div class="row">&nbsp;&nbsp;ㄴ<span class="mc">목록</span><span class="mc on">상세</span></div>
+        <div class="body1">몬스터 · 상세 화면</div>
+      </div>
+      <ul class="pro"><li>지금 시안이 쓰는 방식이라 익숙해요</li><li>모든 층이 한눈에 보여요</li><li>층이 늘면 줄도 늘어나서 위가 점점 차지해요</li></ul>
+      <button class="pick">이걸로 선택</button>
+    </section>
+    <section class="opt" data-q="nav" data-o="c">
+      <h3><span class="ltr">C</span>왼쪽 트리 + 위 경로</h3>
+      <div class="mini">
+        <div class="crumb" style="font-size:11px">홈 <i>›</i> 사전 <i>›</i> 몬스터 <i>›</i> <b>상세</b></div>
+        <div class="side">
+          <div class="tree">
+            <div class="l1">홈</div><div class="l1">사전</div>
+            <div class="l2">몬스터</div><div class="l3">목록</div><div class="l3 on">상세</div>
+            <div class="l2">장비</div><div class="l2">변이</div><div class="l1">업적</div><div class="l1">설정</div>
+          </div>
+          <div class="body1">상세 화면</div>
+        </div>
+      </div>
+      <ul class="pro"><li>전체 구조를 한눈에 봐요 (넓은 화면 기준)</li><li>폰 너비에서는 접어서 "목차" 버튼으로 열어요</li><li>폰에서 작업할 땐 한 번 더 눌러야 해요</li></ul>
+      <button class="pick">이걸로 선택</button>
+    </section>
+  </div>
+
+  <!-- ===== 질문 2 ===== -->
+  <div class="qhead"><div class="sec"><span data-qtitle="body">2. 화면을 고르면 본문 표시</span><small>Q2</small></div><p>바로가기에서 화면을 고르면 아래에 어떻게 보일지예요. 폰 안의 버튼으로 이동해도 길잡이가 따라가는 것은 둘 다 같아요.</p></div>
+  <div class="opts">
+    <section class="opt" data-q="body" data-o="a">
+      <h3><span class="ltr">A</span>고른 화면 하나만</h3>
+      <div class="mini"><div class="body1" style="min-height:92px">몬스터 · 상세<br>(한 화면)</div></div>
+      <ul class="pro"><li>가장 단순해요 (지금의 "한 화면")</li><li>폰 안의 버튼으로 이동하면 길잡이도 같이 바뀌어요</li></ul>
+      <button class="pick">이걸로 선택</button>
+    </section>
+    <section class="opt" data-q="body" data-o="b">
+      <h3><span class="ltr">B</span>같은 층의 화면을 가로로 나열</h3>
+      <div class="mini"><div class="cols"><div>목록</div><div class="on">상세</div><div>지역 목록</div></div><div class="note">고른 화면이 굵게, 이웃 화면이 옆에 보여요</div></div>
+      <ul class="pro"><li>이웃 화면과 비교해서 볼 수 있어요</li><li>화면이 많으면 옆으로 스크롤해요</li></ul>
+      <button class="pick">이걸로 선택</button>
+    </section>
+  </div>
+
+  <!-- ===== 질문 3 ===== -->
+  <div class="qhead"><div class="sec"><span data-qtitle="split">3. 큰 글을 별도 페이지로 빼는 기준</span><small>Q3</small></div><p>세계관 노트에는 줄 하나에 첨언이 8개씩 들어 있어서, 노션처럼 덩어리가 큰 글은 페이지 하나로 따로 열 수 있게 하려는 거예요. 접기는 그대로 써요.</p></div>
+  <div class="opts">
+    <section class="opt" data-q="split" data-o="a">
+      <h3><span class="ltr">A</span>줄마다 "페이지로 열기" 버튼</h3>
+      <div class="mini">
+        <div class="noteitem"><b>멸망</b><span class="tg">페이지로 열기 ↗</span></div>
+        <div class="noteitem"><b>허기와 돈</b><span class="tg">페이지로 열기 ↗</span></div>
+        <div class="noteitem"><b>숨김 부위</b><span class="tg">페이지로 열기 ↗</span></div>
+        <div class="note">펼쳐서 읽다가 길면 필요할 때 눌러요</div>
+      </div>
+      <ul class="pro"><li>내가 열고 싶을 때만 열어요</li><li>기준을 정하지 않아도 돼요</li></ul>
+      <button class="pick">이걸로 선택</button>
+    </section>
+    <section class="opt" data-q="split" data-o="b">
+      <h3><span class="ltr">B</span>길면 자동으로 별도 페이지</h3>
+      <div class="mini">
+        <div class="noteitem"><span><b>멸망</b><p class="sum">핵심 2 · 첨언 6 · 질문 2 … 요약</p></span><span class="tg">긴 글</span></div>
+        <div class="noteitem"><span><b>숨김 부위</b><p class="sum">핵심 1 · 첨언 3 … 요약</p></span><small>펼치기</small></div>
+        <div class="note">목록에는 요약만, 본문은 페이지에서</div>
+      </div>
+      <ul class="pro"><li>목록이 항상 짧아요</li><li>길이 기준(예: 첨언 5개 이상)을 제가 정해요</li></ul>
+      <button class="pick">이걸로 선택</button>
+    </section>
+    <section class="opt" data-q="split" data-o="c">
+      <h3><span class="ltr">C</span>분류(그룹)마다 페이지 하나</h3>
+      <div class="mini">
+        <div class="pagebig"><b>세계 (8줄)</b><div class="ln"></div><div class="ln" style="width:70%"></div><div class="ln" style="width:85%"></div></div>
+        <div class="pagebig"><b>몸과 변이 (6줄)</b><div class="ln" style="width:80%"></div><div class="ln" style="width:60%"></div></div>
+      </div>
+      <ul class="pro"><li>분류별로 따로 가요</li><li>안에서는 줄을 접고 펴요</li></ul>
+      <button class="pick">이걸로 선택</button>
+    </section>
+  </div>
+
+  <!-- ===== 질문 4 ===== -->
+  <div class="qhead"><div class="sec"><span data-qtitle="note">4. 세계관 노트 바로가기</span><small>Q4</small></div><p>세계관 노트의 위쪽 길잡이도 시안과 같은 구조로 맞출지예요. (Q1에서 고른 모양을 노트에도 그대로 써요)</p></div>
+  <div class="opts">
+    <section class="opt" data-q="note" data-o="a">
+      <h3><span class="ltr">A</span>시안과 같은 구조로 통일</h3>
+      <div class="mini"><div class="crumb">노트 <i>›</i> 사전 <i>›</i> 제국 <i>›</i> 소루안 <i>›</i> <b>하이모르</b></div><div class="body1">도시 · 하이모르</div></div>
+      <ul class="pro"><li>분류 › 줄, 사전은 제국 › 도시 › 마을처럼 층을 따라가요</li><li>시안과 노트가 같은 방식으로 움직여요</li></ul>
+      <button class="pick">이걸로 선택</button>
+    </section>
+    <section class="opt" data-q="note" data-o="b">
+      <h3><span class="ltr">B</span>노트는 지금 방식 유지</h3>
+      <div class="mini"><div class="row"><span class="mc on">주제 노트</span><span class="mc">사전</span></div><div class="row"><span class="mc on">전체</span><span class="mc">세계</span><span class="mc">몸과 변이</span></div><div class="note">칩과 검색은 그대로, 긴 글 분리만 추가</div></div>
+      <ul class="pro"><li>바꾸는 양이 적어요</li><li>층이 깊어지면 다시 정리해야 할 수 있어요</li></ul>
+      <button class="pick">이걸로 선택</button>
+    </section>
+  </div>
+</div>
+<script>
+// 시안 A 미니 데모: 경로 이름을 누르면 같은 층의 목록이 펼쳐진다
+(function () {
+  const D = { '홈': ['홈', '게임 시작', '이어서 하기', '사전', '업적', '설정'], '사전': ['몬스터', '장비', '변이', '지역', '특성'], '몬스터': ['목록', '상세'] };
+  const drop = document.getElementById('dropA'), body = document.getElementById('bodyA');
+  document.querySelectorAll('#demoA .crumb button').forEach(b => b.addEventListener('click', () => {
+    const items = D[b.dataset.d]; drop.innerHTML = items.map(x => '<div>' + x + '</div>').join('');
+    drop.querySelectorAll('div').forEach(d => d.onclick = () => { body.textContent = b.dataset.d + ' › ' + d.textContent; });
+  }));
+})();
+</script>
+<script>window.MOCK_ID = 'nav-layers';</script>
+<script src="../../assets/choose.js"></script>
+</body>
+</html>

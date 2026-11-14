@@ -1,0 +1,31 @@
+/* 흰 종이 + 검은 선. 강조는 선 굵기와 노란 표시 하나만. */
+:root{--paper:#fff;--ink:#000;--warn:#fff3a8;
+  --font-body:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --font-num:"JetBrains Mono",ui-monospace,Menlo,monospace;color-scheme:light}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{background:var(--paper)}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 80px}
+a{color:inherit}
+.page{max-width:860px;margin:0 auto;display:grid;gap:16px}
+h1{margin:0;font-size:28px;font-weight:900;letter-spacing:-.02em}
+h2{margin:0;font-size:18px;font-weight:900}
+.back{font-size:13px;font-weight:700;border-bottom:2px solid var(--ink);text-decoration:none;width:fit-content}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chip,.btn{font:inherit;font-size:14px;color:var(--ink);background:var(--paper);border:1px solid var(--ink);border-radius:999px;padding:6px 14px;min-height:38px;cursor:pointer}
+.btn{border-width:1.5px;border-radius:12px;font-weight:700}
+.chip[aria-pressed="true"],.btn.pri{border-width:3px;padding:4px 12px;font-weight:700}
+.chip:focus-visible,.btn:focus-visible,.search:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.search{width:100%;min-height:48px;font:inherit;font-size:16px;color:var(--ink);background:var(--paper);border:1.5px solid var(--ink);border-radius:12px;padding:0 14px}
+.sec{display:flex;justify-content:space-between;align-items:baseline;border-bottom:2px solid var(--ink);padding-bottom:3px;font-weight:900;font-size:15px}
+.sec small{font:800 12px var(--font-num)}
+.tag{display:inline-block;border:1px solid var(--ink);border-radius:6px;padding:0 6px;font-size:11px;font-weight:700;line-height:1.7;white-space:nowrap}
+.tag.k{background:var(--ink);color:var(--paper)}.tag.w{background:var(--warn)}
+.card{display:block;border:1.5px solid var(--ink);border-radius:14px;padding:14px 16px;text-decoration:none;color:var(--ink);background:var(--paper)}
+a.card:hover{border-width:3px;padding:12.5px 14.5px}
+.card h3{margin:0 0 2px;font-size:17px;font-weight:900}
+.card p{margin:0;font-size:14px}
+.meta{font:700 12px var(--font-num);display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;align-items:center}
+.empty{text-align:center;padding:36px 0;border:1.5px dashed var(--ink);border-radius:12px}
+.note{font-size:12.5px}
