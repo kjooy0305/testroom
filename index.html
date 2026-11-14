@@ -26,7 +26,7 @@
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const M = (window.MOCKS || []).slice().sort((a, b) => (b.date + b.id).localeCompare(a.date + a.id));
-const ST = { open: ['선택 필요', 'w'], done: ['선택 완료', 'k'], archive: ['보관', ''] };
+const ST = { open: ['선택 필요', 'w'], done: ['선택 완료', 'k'], archive: ['보관', ''], live: ['준완성 사이트', 'k'] };
 const projects = [...new Set(M.map(m => m.project))];
 let st = 'all', pj = 'all', q = '';
 
@@ -35,14 +35,14 @@ function chip(group, id, label) {
   const b = document.createElement('button'); b.className = 'chip'; b.textContent = label; b.dataset.g = group; b.dataset.v = id;
   b.onclick = () => { if (group === 'st') st = id; else pj = id; render(); }; $('chips').append(b);
 }
-chip('st', 'all', '전체'); chip('st', 'open', '선택 필요'); chip('st', 'done', '선택 완료'); chip('st', 'archive', '보관');
+chip('st', 'all', '전체'); chip('st', 'open', '선택 필요'); chip('st', 'live', '준완성 사이트'); chip('st', 'done', '선택 완료'); chip('st', 'archive', '보관');
 projects.forEach(p => chip('pj', p, p));
 
 function cardHTML(m) {
   const c = chosen(m), n = (m.questions || []).filter(x => c[x.id] || (c['~' + x.id] || '').trim()).length, total = (m.questions || []).length;
   const [label, cls] = ST[m.status] || ST.open;
   const prog = total ? `<span class="tag">${n}/${total} 선택</span>` : '';
-  return `<a class="card" href="mocks/${esc(m.id)}/"><h3>${esc(m.title)}</h3><p>${esc(m.summary || '')}</p>
+  return `<a class="card" href="${esc(m.href || 'mocks/' + m.id + '/')}"><h3>${esc(m.title)}</h3><p>${esc(m.summary || '')}</p>
     <div class="meta"><span class="tag ${cls}">${label}</span>${prog}<span>${esc(m.project)}</span><span>${esc(m.date)}</span></div>
     ${m.decided ? `<p class="note" style="margin-top:8px"><b>선택:</b> ${esc(m.decided)}${m.applied ? ' · ' + esc(m.applied) : ''}</p>` : ''}
     <div class="meta">${(m.tags || []).map(t => `<span class="tag">${esc(t)}</span>`).join('')}</div></a>`;
@@ -53,9 +53,9 @@ function render() {
   const items = M.filter(m => (st === 'all' || m.status === st) && (pj === 'all' || m.project === pj)
     && (!k || [m.title, m.project, m.summary, m.id, ...(m.tags || []), ...(m.questions || []).map(x => x.text)].join(' ').toLowerCase().includes(k)));
   // 선택이 필요한 시안은 위, 그 아래에 지난 시안(최신순)
-  const open = items.filter(m => m.status === 'open'), rest = items.filter(m => m.status !== 'open');
+  const open = items.filter(m => m.status === 'open' || m.status === 'live'), rest = items.filter(m => m.status !== 'open' && m.status !== 'live');
   let html = '';
-  if (open.length) html += `<section style="display:grid;gap:12px"><div class="sec"><span>지금 선택할 시안</span><small>${open.length}</small></div>${open.map(cardHTML).join('')}</section>`;
+  if (open.length) html += `<section style="display:grid;gap:12px"><div class="sec"><span>지금 볼 시안 · 사이트</span><small>${open.length}</small></div>${open.map(cardHTML).join('')}</section>`;
   if (rest.length) html += `<section style="display:grid;gap:12px"><div class="sec"><span>지난 시안</span><small>${rest.length}</small></div>${rest.map(cardHTML).join('')}</section>`;
   $('list').innerHTML = html; $('empty').hidden = items.length > 0;
   $('foot').textContent = `시안 ${M.length}개 · 선택 필요 ${M.filter(m => m.status === 'open').length}개`;

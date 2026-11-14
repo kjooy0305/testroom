@@ -3,6 +3,16 @@
 // questions: 시안 페이지의 질문 id 목록과 질문 글 (목록에서 선택 진행도를 보여 준다)
 window.MOCKS = [
   {
+    id: 'usw-sync-app',
+    href: 'usw-sync/',
+    title: 'USW SYNC 준완성 사이트 (체험판)',
+    project: 'USW SYNC (수원대 팀플 조율)',
+    date: '2026-11-14',
+    status: 'live',
+    summary: '시안 모드가 아닌 실제 동작하는 흑백 사이트. 소개 → 로그인(이름·학번) → PC 대시보드 / 휴대폰 목록. 시간표 등록, 공통 공강 계산, 회의 후보 투표·확정, 할 일, 마감 진행률까지 브라우저에 저장됨',
+    tags: ['사이트', '준완성', 'PC', '휴대폰', '흑백', '해커톤']
+  },
+  {
     id: 'usw-sync-frame',
     title: 'USW SYNC 화면 틀: PC · 비로그인 소개 · 휴대폰',
     project: 'USW SYNC (수원대 팀플 조율)',
