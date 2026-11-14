@@ -44,6 +44,7 @@ function cardHTML(m) {
   const prog = total ? `<span class="tag">${n}/${total} 선택</span>` : '';
   return `<a class="card" href="mocks/${esc(m.id)}/"><h3>${esc(m.title)}</h3><p>${esc(m.summary || '')}</p>
     <div class="meta"><span class="tag ${cls}">${label}</span>${prog}<span>${esc(m.project)}</span><span>${esc(m.date)}</span></div>
+    ${m.decided ? `<p class="note" style="margin-top:8px"><b>선택:</b> ${esc(m.decided)}${m.applied ? ' · ' + esc(m.applied) : ''}</p>` : ''}
     <div class="meta">${(m.tags || []).map(t => `<span class="tag">${esc(t)}</span>`).join('')}</div></a>`;
 }
 function render() {
