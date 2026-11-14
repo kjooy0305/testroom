@@ -3,6 +3,22 @@
 // questions: 시안 페이지의 질문 id 목록과 질문 글 (목록에서 선택 진행도를 보여 준다)
 window.MOCKS = [
   {
+    id: 'edit-export',
+    title: '세계관 노트 편집과 내보내기',
+    project: '끝에 도달하는 이야기',
+    date: '2026-11-14',
+    status: 'open',
+    summary: '사이트에서 노트를 직접 고치고, 바뀐 부분만 파일로 내보내 저장소에 반영하는 방식에서 애매한 부분 정하기 (글로 답하는 칸 포함)',
+    tags: ['시안', '편집', '내보내기', '세계관 노트', '반영'],
+    questions: [
+      { id: 'scope', text: '편집 범위' },
+      { id: 'send', text: '수정 내용 전달 방식' },
+      { id: 'merge', text: '새 내용과 겹칠 때' },
+      { id: 'want', text: '꼭 있었으면 하는 편집 기능' },
+      { id: 'file', text: '내보내기 파일 요구사항' }
+    ]
+  },
+  {
     id: 'nav-layers',
     title: '레이어 구조: 바로가기와 큰 글 분리',
     project: '끝에 도달하는 이야기',

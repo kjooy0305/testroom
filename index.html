@@ -39,7 +39,7 @@ chip('st', 'all', '전체'); chip('st', 'open', '선택 필요'); chip('st', 'do
 projects.forEach(p => chip('pj', p, p));
 
 function cardHTML(m) {
-  const c = chosen(m), n = (m.questions || []).filter(x => c[x.id]).length, total = (m.questions || []).length;
+  const c = chosen(m), n = (m.questions || []).filter(x => c[x.id] || (c['~' + x.id] || '').trim()).length, total = (m.questions || []).length;
   const [label, cls] = ST[m.status] || ST.open;
   const prog = total ? `<span class="tag">${n}/${total} 선택</span>` : '';
   return `<a class="card" href="mocks/${esc(m.id)}/"><h3>${esc(m.title)}</h3><p>${esc(m.summary || '')}</p>
