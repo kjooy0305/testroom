@@ -3,6 +3,27 @@
 // questions: 시안 페이지의 질문 id 목록과 질문 글 (목록에서 선택 진행도를 보여 준다)
 window.MOCKS = [
   {
+    id: 'dungeon-minigames',
+    title: '던전 미니게임: 어떤 게임을 할지',
+    project: '끝에 도달하는 이야기',
+    date: '2026-11-14',
+    status: 'open',
+    summary: '미니게임형 던전에서 쓸 게임 후보 8가지를 보고 "처음부터 / 나중에 / 빼기"로 고르기 (대체 방식과 새 아이디어는 글로)',
+    tags: ['시안', '던전', '미니게임', '세계관 노트'],
+    questions: [
+      { id: 'g1', text: '① 회로 이어 붙이기' },
+      { id: 'g2', text: '② 문양 기억 짝 맞추기' },
+      { id: 'g3', text: '③ 타이밍 막대' },
+      { id: 'g4', text: '④ 안개 길 찾기' },
+      { id: 'g5', text: '⑤ 틀린 곳 찾기' },
+      { id: 'g6', text: '⑥ 소리 따라 하기' },
+      { id: 'g7', text: '⑦ 식량 나누기' },
+      { id: 'g8', text: '⑧ 피하기' },
+      { id: 'alt', text: '못 하는 사람을 위한 대체 방식' },
+      { id: 'new', text: '넣고 싶은 미니게임' }
+    ]
+  },
+  {
     id: 'edit-export',
     title: '세계관 노트 편집과 내보내기',
     project: '끝에 도달하는 이야기',
