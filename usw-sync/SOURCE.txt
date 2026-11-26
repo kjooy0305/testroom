@@ -1,0 +1,2 @@
+# 팀 저장소 develop 브랜치의 frontend 를 빌드한 결과물입니다. 직접 고치지 말고 다시 빌드해서 덮어씁니다.
+# 원본: https://github.com/suwon-campus-notice/hackathon-campus-notice- (develop, e613579)

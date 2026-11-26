@@ -5,12 +5,12 @@ window.MOCKS = [
   {
     id: 'usw-sync-app',
     href: 'usw-sync/',
-    title: 'USW SYNC 준완성 사이트 (체험판)',
+    title: 'Coetus(USW SYNC) 팀 저장소 develop 빌드',
     project: 'USW SYNC (수원대 팀플 조율)',
-    date: '2026-11-14',
+    date: '2026-11-26',
     status: 'live',
-    summary: '시안 모드가 아닌 실제 동작하는 흑백 사이트. 소개 → 로그인(이름·학번) → PC 대시보드 / 휴대폰 목록. 시간표 등록, 공통 공강 계산, 회의 후보 투표·확정, 할 일, 마감 진행률까지 브라우저에 저장됨',
-    tags: ['사이트', '준완성', 'PC', '휴대폰', '흑백', '해커톤']
+    summary: '팀 저장소 develop 브랜치의 React 앱(Vite 빌드)을 그대로 올린 것. 로그인 → 내 팀 목록 → 팀 홈/일정/할 일/멤버, 시간표 입력, 공통 가능 시간, 투표. 아직 백엔드 없이 예시 데이터로 동작(새로고침하면 초기화). 예시 계정 jinwoo / 1234',
+    tags: ['사이트', 'develop 빌드', 'React', '휴대폰', '해커톤']
   },
   {
     id: 'usw-sync-frame',
